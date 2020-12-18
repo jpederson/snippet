@@ -73,11 +73,12 @@ function snippet_shortcode( $atts ) {
 		// check to make sure it's not empty
 		if ( isset( $snippets[0] ) ) {
 
-			// get the snippet and return the post content
-			$the_snippet = $snippets[0];
-			return $the_snippet->post_content;
+			// return post content
+			return $snippets[0]->post_content;
 
 		} else {
+
+			// return nothing if the snippet doesn't exist
 			return '';
 		}
 		
