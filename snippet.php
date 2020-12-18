@@ -4,18 +4,20 @@
 Plugin Name: Snippets
 Plugin URI: https://github.com/jpederson/snippets
 description: Snippets of reusable html that can easily be included in pages, posts, or even templates using shortcodes.
-Version: 0.0.2
+Version: 0.0.3
 Author: James Pederson
 Author URI: https://jpederson.com
 License: GPL2
 */
 
 
-// let's create the function for the custom type
+// snippet custom post type function
 function snippet_post_type() { 
-	// creating (registering) the custom type 
-	register_post_type( 'snippet', /* (http://codex.wordpress.org/Function_Reference/register_post_type) */
-		// let's now add all the options for this post type
+
+	// register our custom post type
+	register_post_type( 'snippet',
+
+		// custom post type information
 		array(
 			'labels' => array(
 				'name' => __( 'Snippets', 'ptheme' ), /* This is the Title of the Group */
@@ -31,7 +33,7 @@ function snippet_post_type() {
 				'not_found' =>  __( 'Nothing found in the database.', 'ptheme' ), /* This displays if there are no entries yet */ 
 				'not_found_in_trash' => __( 'Nothing found in Trash', 'ptheme' ), /* This displays if there is nothing in the trash */
 				'parent_item_colon' => ''
-			), /* end of arrays */
+			),
 			'description' => __( 'Manage Snippets.', 'ptheme' ), /* Custom Type Description */
 			'public' => true,
 			'publicly_queryable' => true,
@@ -43,13 +45,12 @@ function snippet_post_type() {
 			'has_archive' => false, /* you can rename the slug here */
 			'capability_type' => 'post',
 			'hierarchical' => false,
-			/* the next one is important, it tells what's enabled in the post editor */
 			'supports' => array( 'title', 'editor', 'revisions' )
-		) /* end of options */
-	); /* end of register post type */	
-}
+		)
 
-// adding the function to the Wordpress init
+	);
+
+}
 add_action( 'init', 'snippet_post_type');
 
 
@@ -98,8 +99,6 @@ function snippet_shortcode( $atts ) {
 		
 	}
 }
-
-// register the snippet shortcode
 add_shortcode( 'snippet', 'snippet_shortcode' );
 
 
@@ -116,8 +115,6 @@ function columns_snippet( $columns ) {
 	// return the columns list
 	return $columns;
 }
-
-// register the new column
 add_filter('manage_snippet_posts_columns', 'columns_snippet');
 
 
@@ -137,4 +134,24 @@ function columns_snippet_content( $column, $post_id ) {
 	}
 
 }
-add_action('manage_posts_custom_column' , 'columns_snippet_content', 10, 2); ?>
+add_action('manage_posts_custom_column' , 'columns_snippet_content', 10, 2);
+
+
+
+// remove data filtering from snippets admin listing
+function snippet_remove_date_filter( $months ) {
+
+	// get post type
+    global $typenow;
+
+    // only remove this for snippet post type
+    if ( $typenow == 'snippet' ) {
+        return array();
+    }
+
+    // otherwise keep date filter
+    return $months;
+}
+add_filter( 'months_dropdown_results', 'snippet_remove_date_filter' );
+
+
