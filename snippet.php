@@ -49,13 +49,12 @@ function snippet_post_type() {
 	); /* end of register post type */	
 }
 
-
 // adding the function to the Wordpress init
 add_action( 'init', 'snippet_post_type');
 
 
 
-add_shortcode( 'snippet', 'snippet_shortcode' );
+// function to handle the snippet shortcode
 function snippet_shortcode( $atts ) {
 
 	// if we have a slug specified
@@ -84,5 +83,9 @@ function snippet_shortcode( $atts ) {
 		
 	}
 }
+
+// register the snippet shortcode
+add_shortcode( 'snippet', 'snippet_shortcode' );
+
 
 
