@@ -89,3 +89,37 @@ add_shortcode( 'snippet', 'snippet_shortcode' );
 
 
 
+// custom admin listing column to output the shortcode for each snipper
+function columns_snippet( $columns ) {
+
+	// don't include the data column (it's really not necessary)
+	unset($columns['date']);
+
+	// add a shortcode column
+	$columns['snippet_shortcode'] = 'Shortcode';
+
+	// return the columns list
+	return $columns;
+}
+
+// register the new column
+add_filter('manage_snippet_posts_columns', 'columns_snippet');
+
+
+
+// populate the new column with the shortcode so users can easily copy it
+function columns_snippet_content( $column, $post_id ) {
+
+	// only affect the appropriate column
+    if ( $column === 'snippet_shortcode' ) {
+
+    	// get the slug
+    	$slug = get_post_field( 'post_name', $post_id );
+		
+		// output the shortcode for easy copying
+		echo '[snippet slug="' . $slug . '"]';
+
+	}
+
+}
+add_action('manage_posts_custom_column' , 'columns_snippet_content', 10, 2); ?>
