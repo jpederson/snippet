@@ -86,7 +86,7 @@ function snippet_shortcode( $atts ) {
 			} else {
 
 				// if there's no script tags to mess up, process with wpautop and return formatted
-				return wpautop( $snippet_content );
+				return apply_filters( 'the_content', $snippet_content );
 
 			}
 
