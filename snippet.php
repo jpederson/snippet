@@ -155,7 +155,8 @@ function snippet_remove_date_filter( $months ) {
 add_filter( 'months_dropdown_results', 'snippet_remove_date_filter' );
 
 
-// 
+
+// sort snippets by title in the dashboard listing.
 function snippet_order( $query ) {
 
 	// get post type
