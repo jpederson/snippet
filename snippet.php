@@ -155,3 +155,19 @@ function snippet_remove_date_filter( $months ) {
 add_filter( 'months_dropdown_results', 'snippet_remove_date_filter' );
 
 
+// 
+function snippet_order( $query ) {
+
+	// get post type
+    global $typenow;
+
+    // only remove this for snippet post type
+    if ( $typenow == 'snippet' ) {
+		$query->set( 'order' , 'asc' );
+		$query->set( 'orderby', 'title');
+		return;
+	}
+}
+add_action( 'pre_get_posts', 'snippet_order', 1 );
+
+
