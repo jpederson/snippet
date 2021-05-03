@@ -4,7 +4,7 @@
 Plugin Name: Snippets
 Plugin URI: https://github.com/jpederson/snippets
 description: Snippets of reusable html that can easily be included in pages, posts, or even templates using shortcodes.
-Version: 0.0.3
+Version: 0.0.4
 Author: James Pederson
 Author URI: https://jpederson.com
 License: GPL2
@@ -100,6 +100,52 @@ function snippet_shortcode( $atts ) {
 	}
 }
 add_shortcode( 'snippet', 'snippet_shortcode' );
+
+
+
+// function to handle the snippet shortcode
+function get_snippet( $slug ) {
+
+	// if we have a slug specified
+	if ( isset( $slug ) ) {
+
+		// let's set the args for our select
+		$args = array(
+		  'name'        => $slug,
+		  'post_type'   => 'snippet',
+		  'numberposts' => 1
+		);
+
+		// get the snippet
+		$snippets = get_posts( $args );
+
+		// check to make sure it's not empty
+		if ( isset( $snippets[0] ) ) {
+
+			// store snippet content
+			$snippet_content = $snippets[0]->post_content;
+
+			// if the content contains script tags or style tags, return as is
+			if ( stristr( $snippet_content, '<script' ) || stristr( $snippet_content, '<style' ) ) {
+
+				// return the content
+				return $snippet_content;
+
+			} else {
+
+				// if there's no script tags to mess up, process with wpautop and return formatted
+				return apply_filters( 'the_content', $snippet_content );
+
+			}
+
+		} else {
+
+			// return nothing if the snippet doesn't exist
+			return '';
+		}
+		
+	}
+}
 
 
 
