@@ -112,11 +112,7 @@ add_shortcode( 'snippet', 'snippet_shortcode' );
 
 
 // function to handle the snippet shortcode
-function get_snippet( $slug ) {
-
-	if ( !isset( $atts['content_filter'] ) ) {
-		$atts['content_filter'] = true;
-	}
+function get_snippet( $slug, $filter_content = true ) {
 
 	// if we have a slug specified
 	if ( isset( $slug ) ) {
@@ -146,7 +142,7 @@ function get_snippet( $slug ) {
 			} else {
 
 				// if there's no script tags to mess up, process with wpautop and return formatted
-				if ( !$atts['content_filter'] ) {
+				if ( !$filter_content ) {
 					return $snippet_content;
 				} else {
 					return apply_filters( 'the_content', $snippet_content );
