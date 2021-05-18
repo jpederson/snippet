@@ -58,6 +58,10 @@ add_action( 'init', 'snippet_post_type');
 // function to handle the snippet shortcode
 function snippet_shortcode( $atts ) {
 
+	if ( !isset( $atts['content_filter'] ) ) {
+		$atts['content_filter'] = true;
+	}
+
 	// if we have a slug specified
 	if ( isset( $atts['slug'] ) ) {
 
@@ -86,7 +90,11 @@ function snippet_shortcode( $atts ) {
 			} else {
 
 				// if there's no script tags to mess up, process with wpautop and return formatted
-				return apply_filters( 'the_content', $snippet_content );
+				if ( !$atts['content_filter'] ) {
+					return $snippet_content;
+				} else {
+					return apply_filters( 'the_content', $snippet_content );
+				}
 
 			}
 
@@ -105,6 +113,10 @@ add_shortcode( 'snippet', 'snippet_shortcode' );
 
 // function to handle the snippet shortcode
 function get_snippet( $slug ) {
+
+	if ( !isset( $atts['content_filter'] ) ) {
+		$atts['content_filter'] = true;
+	}
 
 	// if we have a slug specified
 	if ( isset( $slug ) ) {
@@ -134,7 +146,11 @@ function get_snippet( $slug ) {
 			} else {
 
 				// if there's no script tags to mess up, process with wpautop and return formatted
-				return apply_filters( 'the_content', $snippet_content );
+				if ( !$atts['content_filter'] ) {
+					return $snippet_content;
+				} else {
+					return apply_filters( 'the_content', $snippet_content );
+				}
 
 			}
 
