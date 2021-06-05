@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Snippets
-Plugin URI: https://github.com/jpederson/snippets
+Plugin URI: https://github.com/wp-pure/snippets
 description: Snippets of reusable html that can easily be included in pages, posts, or even templates using shortcodes.
 Version: 0.0.4
 Author: James Pederson
